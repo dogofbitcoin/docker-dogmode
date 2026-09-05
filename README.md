@@ -24,4 +24,4 @@ Pin the manifest-list digest, printed at the end of each run, wherever the image
 | Commit | `75032400914250c7ad857dc29043761680a66485` (the merge of DOG Mode pull request 3 into `31.1-dogmode`) |
 | Base | Bitcoin Core 31.1 plus the DOG Mode relay policy (3,900,000 WU standard transactions, a global 1 sat dust limit, preferential peering on service bit 14) |
 | Binaries | `bitcoind`, `bitcoin-cli`, `bitcoin`, `bitcoin-node` (the multiprocess node, for the IPC interface) |
-| Contact | dev@dogswap.io |
+| Contact | contact@dogofbitcoin.org |
