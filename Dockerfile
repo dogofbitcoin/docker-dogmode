@@ -39,7 +39,8 @@ RUN make -C depends -j"$(nproc)" NO_QT=1 NO_QR=1 NO_USDT=1 \
     && cmake --install build --strip \
     && mkdir -p /out \
     && for b in bitcoind bitcoin-cli bitcoin bitcoin-tx bitcoin-util bitcoin-wallet; do \
-         [ -x "/opt/dogmode/bin/$b" ] && cp "/opt/dogmode/bin/$b" /out/; done \
+         if [ -x "/opt/dogmode/bin/$b" ]; then cp "/opt/dogmode/bin/$b" /out/; fi; done \
+    && if [ -x /opt/dogmode/libexec/bitcoin-node ]; then cp /opt/dogmode/libexec/bitcoin-node /out/; fi \
     && cd /out && sha256sum * | tee SHA256SUMS \
     && ./bitcoind --version | head -1
 
