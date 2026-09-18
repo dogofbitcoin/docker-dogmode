@@ -86,3 +86,27 @@ From `31.1-dogmode-7503240-r2` on, inside the image at `/usr/share/doc/dogmode/`
 
 The `Dockerfile`, the workflow, `licenses.py` and this README are MIT licensed; see `LICENSE`. The testing guide
 in `doc/` is J25dunn's contribution (#2).
+
+## Testing changes
+
+Pull requests build and smoke-test the image on native amd64 and arm64 runners
+without publishing it. Pushed tags and manual runs in the upstream repository
+publish each architecture only after its smoke test passes, then assemble the
+combined image tag. Forks can run the checks without publishing upstream images.
+
+To run the same checks locally (Docker is required):
+
+```sh
+docker build -t dogmode:test .
+bash test/smoke.sh dogmode:test
+```
+
+The test checks binary checksums and the four advertised executables, starts an
+isolated regtest node, verifies the DOG_MODE service flag, generates three blocks
+through RPC, shuts down cleanly, and recreates the container through
+`bitcoin -m node` to check the launcher, multiprocess node, and persisted chain.
+It creates and removes its own Docker volume, has no network access, and does not
+use your existing Bitcoin data. On failure it prints the node logs before cleanup.
+
+This is a packaging smoke test, not the upstream unit/functional suite or a full
+multiprocess IPC integration test.
