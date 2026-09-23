@@ -1,0 +1,36 @@
+name: watch
+
+# Once a day: has DOG Mode or Bitcoin Core moved past what this repository builds? .github/watch.py reads DOG Mode's
+# branch 31.1-dogmode (its tip, its version, its tags and releases) and Bitcoin Core's releases, compares them with the
+# commit this repository pins, and opens one issue for each new thing, so anyone watching the repository is told. It
+# reads and opens issues and does nothing else: no image is built or published here (that is build.yml, on a pushed tag).
+#
+# It runs on its schedule or by hand, never on a push or a pull request, and its token can read this repository and
+# write its issues, nothing more. A read that fails fails the run, and GitHub emails a failed scheduled run to the
+# account that last changed its schedule.
+#
+# GitHub disables a scheduled workflow in a public repository after 60 days without activity in the repository; it is
+# turned back on from the repository's Actions tab. The DOG Mode seed site reads the same sources on its own schedule,
+# and that read is the backstop.
+on:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      # The checkout build.yml pins, for .github/watch.py. It keeps no token, because nothing later uses git.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: read, compare with the pin, open an issue for each new thing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/watch.py

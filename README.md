@@ -68,6 +68,18 @@ then as `sha256:70c5c5823dddaafcf38d1f8c331239a29fc008358efb651da1942734127c3dac
 The workflow publishes this commit as `31.1-dogmode-7503240-r2`: the same programs, with their license files
 added (below).
 
+## Told when DOG Mode or Bitcoin Core moves
+
+Once a day `.github/workflows/watch.yml` reads DOG Mode's `31.1-dogmode` branch, DOG Mode's tags and releases, and
+Bitcoin Core's releases, compares them with the commit pinned above, and opens one issue for each new thing: the
+branch holding commits the pin does not, a DOG Mode tag or release, a Bitcoin Core release newer than the version DOG
+Mode is built on, or a newer Bitcoin Core major, for information. Watch this repository on GitHub to be told. The
+workflow only reads and opens issues. A new DOG Mode commit is built, tested and run on the Foundation's own node
+first, and this image is rebuilt after that, by a pushed tag. A read that fails fails the run, so a quiet day means it
+looked and found nothing new. GitHub disables scheduled workflows in a public repository after 60 days without activity,
+so the DOG Mode seed site, [seed.dogofbitcoin.org](https://seed.dogofbitcoin.org), reads the same sources on its own
+schedule as the backstop.
+
 ## Credit and licenses
 
 DOG Mode is the DOG Mode project's client ([bitcoindogmode/bitcoin](https://github.com/bitcoindogmode/bitcoin)),
